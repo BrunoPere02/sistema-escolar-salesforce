@@ -1,0 +1,16 @@
+<template>
+    <lightning-card title="Lista de Turmas" icon-name="standard:class">
+        <div class="slds-m-around_medium">
+            <template if:true={turmas}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={turmas}
+                    columns={columns}>
+                </lightning-datatable>
+            </template>
+            <template if:true={erro}>
+                <p>Erro ao carregar turmas.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>
