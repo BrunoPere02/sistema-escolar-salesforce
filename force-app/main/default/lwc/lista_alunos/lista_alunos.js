@@ -1,5 +1,5 @@
 import { LightningElement, wire } from 'lwc';
-import { gql, graphql } from 'lightning/uiGraphQLApi';
+import getAlunos from '@salesforce/apex/AlunoController.getAlunos';
 
 const COLUMNS = [
     { label: 'Nome', fieldName: 'Name' },
@@ -13,36 +13,10 @@ export default class Lista_alunos extends LightningElement {
     alunos;
     erro;
 
-    @wire(graphql, {
-        query: gql`
-            query getAlunos {
-                uiapi {
-                    query {
-                        Aluno__c {
-                            edges {
-                                node {
-                                    Id
-                                    Name { value }
-                                    CPF__c { value }
-                                    E_mail__c { value }
-                                    Status__c { value }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        `
-    })
+    @wire(getAlunos)
     wiredAlunos({ data, error }) {
         if (data) {
-            this.alunos = data.uiapi.query.Aluno__c.edges.map(edge => ({
-                Id: edge.node.Id,
-                Name: edge.node.Name.value,
-                CPF__c: edge.node.CPF__c.value,
-                E_mail__c: edge.node.E_mail__c.value,
-                Status__c: edge.node.Status__c.value
-            }));
+            this.alunos = data;
         } else if (error) {
             this.erro = error;
         }
