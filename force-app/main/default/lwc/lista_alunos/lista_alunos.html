@@ -1,15 +1,19 @@
 <template>
     <lightning-card title="Lista de Alunos" icon-name="standard:contact">
         <div class="slds-m-around_medium">
-            <template if:true={alunos}>
+            <lightning-combobox
+                label="Filtrar por Status"
+                value={statusSelecionado}
+                options={opcoesStatus}
+                onchange={handleFiltro}>
+            </lightning-combobox>
+            <br/>
+            <template if:true={alunosFiltrados}>
                 <lightning-datatable
                     key-field="Id"
-                    data={alunos}
+                    data={alunosFiltrados}
                     columns={columns}>
                 </lightning-datatable>
-            </template>
-            <template if:true={erro}>
-                <p>Erro ao carregar alunos.</p>
             </template>
         </div>
     </lightning-card>
