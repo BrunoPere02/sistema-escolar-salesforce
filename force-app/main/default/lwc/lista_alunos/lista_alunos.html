@@ -20,12 +20,9 @@
             <template if:true={alunos}>
                 <lightning-datatable
                     key-field="Id"
-                    data={alunos}
+                    data={alunosFiltrados}
                     columns={columns}>
                 </lightning-datatable>
-            </template>
-            <template if:true={erro}>
-                <p>Erro ao carregar alunos.</p>
             </template>
         </div>
     </lightning-card>
