@@ -1,4 +1,5 @@
 import { LightningElement, wire, track } from 'lwc';
+import { NavigationMixin } from 'lightning/navigation';
 import getAlunos from '@salesforce/apex/AlunoController.getAlunos';
 
 const COLUMNS = [
@@ -8,37 +9,49 @@ const COLUMNS = [
     { label: 'Status', fieldName: 'Status__c' }
 ];
 
-export default class Lista_alunos extends LightningElement {
+export default class Lista_alunos extends NavigationMixin(LightningElement) {
     columns = COLUMNS;
-    @track alunosFiltrados;
-    todosAlunos;
-    statusSelecionado = 'Todos';
+    @track alunos;
+    erro;
+    statusSelecionado = '';
 
-    opcoesStatus = [
-        { label: 'Todos', value: 'Todos' },
-        { label: 'Matriculado', value: 'Matriculado' },
-        { label: 'Formado', value: 'Formado' },
-        { label: 'Inativo', value: 'Inativo' }
+    statusOptions = [
+        { label: 'Todos', value: '' },
+        { label: 'Ativo', value: 'Ativo' },
+        { label: 'Inativo', value: 'Inativo' },
+        { label: 'Formado', value: 'Formado' }
     ];
+
+    _todosAlunos = [];
 
     @wire(getAlunos)
     wiredAlunos({ data, error }) {
         if (data) {
-            this.todosAlunos = data;
-            this.alunosFiltrados = data;
+            this._todosAlunos = data;
+            this.alunos = data;
         } else if (error) {
-            console.error(error);
+            this.erro = error;
         }
     }
 
     handleFiltro(event) {
         this.statusSelecionado = event.detail.value;
-        if (this.statusSelecionado === 'Todos') {
-            this.alunosFiltrados = this.todosAlunos;
+        if (this.statusSelecionado === '') {
+            this.alunos = this._todosAlunos;
         } else {
-            this.alunosFiltrados = this.todosAlunos.filter(
+            this.alunos = this._todosAlunos.filter(
                 aluno => aluno.Status__c === this.statusSelecionado
             );
         }
+    }
+
+    novoRegistro() {
+        this[NavigationMixin.Navigate]({
+            type: 'standard__objectPage',
+            attributes: {
+                objectApiName: 'Aluno__c',
+                actionName: 'new'
+            }
+        });
     }
 }
