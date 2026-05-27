@@ -15,14 +15,18 @@ export default class Lista_alunos extends NavigationMixin(LightningElement) {
     erro;
     statusSelecionado = '';
 
-    statusOptions = [
-        { label: 'Todos', value: '' },
-        { label: 'Ativo', value: 'Ativo' },
-        { label: 'Inativo', value: 'Inativo' },
-        { label: 'Formado', value: 'Formado' }
-    ];
+ statusOptions = [
+    { label: 'Todos', value: '' },
+    { label: 'Matriculado', value: 'Matriculado' },
+    { label: 'Trancado', value: 'Trancado' },
+    { label: 'Formado', value: 'Formado' }
+];
 
     _todosAlunos = [];
+
+    get totalRegistros() {
+        return this.alunos ? this.alunos.length : 0;
+    }
 
     @wire(getAlunos)
     wiredAlunos({ data, error }) {

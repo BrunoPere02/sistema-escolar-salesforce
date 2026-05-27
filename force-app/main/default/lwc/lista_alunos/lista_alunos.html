@@ -13,8 +13,12 @@
                 value={statusSelecionado}
                 options={statusOptions}
                 onchange={handleFiltro}>
-              </lightning-combobox>
-              <lightning-datatable
+            </lightning-combobox>
+            <p class="slds-m-top_small">
+                <strong>Total: {totalRegistros} alunos</strong>
+            </p>
+            <template if:true={alunos}>
+                <lightning-datatable
                     key-field="Id"
                     data={alunosFiltrados}
                     columns={columns}>
