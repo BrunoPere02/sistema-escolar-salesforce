@@ -1,6 +1,19 @@
 <template>
-    <lightning-card title="Lista de Alunos" icon-name="standard:contact">
+    <lightning-card title="Lista de Alunos" icon-name="standard:education">
+        <div slot="actions">
+            <lightning-button 
+                label="Novo Aluno" 
+                variant="brand" 
+                onclick={novoRegistro}>
+            </lightning-button>
+        </div>
         <div class="slds-m-around_medium">
+            <lightning-combobox
+                label="Filtrar por Status"
+                value={statusSelecionado}
+                options={statusOptions}
+                onchange={handleFiltro}>
+            </lightning-combobox>
             <template if:true={alunos}>
                 <lightning-datatable
                     key-field="Id"
